@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "content_id")
     private Long id;
 

@@ -11,7 +11,6 @@ import lombok.*;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "course_id")
     private Long id;
 

@@ -13,7 +13,6 @@ import org.example.coursemanager.course.model.Course;
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "lesson_id")
     private Long id;
 
