@@ -25,14 +25,6 @@ public class CategoryController {
         return "category/list";
     }
 
-    @GetMapping("/search")
-    public String searchCategories(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
-        Page<Category> categoryPage = categoryService.getCategoriesByName(name, page, size);
-        model.addAttribute("categoryPage", categoryPage);
-        model.addAttribute("searchName", name);
-        return "category/list";
-    }
-
     @GetMapping("/create")
     public String createCategory(Model model) {
         model.addAttribute("category", new Category());
@@ -56,5 +48,13 @@ public class CategoryController {
     public String deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return "redirect:/categories";
+    }
+
+    @GetMapping("/search")
+    public String searchCategories(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
+        Page<Category> categoryPage = categoryService.getCategoriesByName(name, page, size);
+        model.addAttribute("categoryPage", categoryPage);
+        model.addAttribute("searchName", name);
+        return "category/list";
     }
 }
