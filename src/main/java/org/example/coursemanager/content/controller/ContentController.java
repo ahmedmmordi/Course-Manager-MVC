@@ -26,16 +26,6 @@ public class ContentController {
         return "content/list";
     }
 
-    @GetMapping("/filter/date")
-    public String filterContentByDate(@RequestParam DateRange range, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Content> contentPage = contentService.filterContentsByCreatedAt(range, pageable);
-        model.addAttribute("contentPage", contentPage);
-        model.addAttribute("filterType", "date");
-        model.addAttribute("range", range);
-        return "content/list";
-    }
-
     @GetMapping("/create")
     public String createContent(Model model) {
         model.addAttribute("content", new Content());
@@ -59,5 +49,15 @@ public class ContentController {
     public String deleteContent(@PathVariable Long id) {
         contentService.deleteContent(id);
         return "redirect:/contents";
+    }
+
+    @GetMapping("/filter/date")
+    public String filterContentByDate(@RequestParam DateRange range, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Content> contentPage = contentService.filterContentsByCreatedAt(range, pageable);
+        model.addAttribute("contentPage", contentPage);
+        model.addAttribute("filterType", "date");
+        model.addAttribute("range", range);
+        return "content/list";
     }
 }
