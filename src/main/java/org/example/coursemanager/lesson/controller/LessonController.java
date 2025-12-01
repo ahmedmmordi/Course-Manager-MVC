@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/lessons")
 public class LessonController {
@@ -18,31 +20,10 @@ public class LessonController {
     }
 
     @GetMapping
-    public String listLessons(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public String listLessons(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Lesson> lessonPage = lessonService.getAllLessons(pageable);
         model.addAttribute("lessonPage", lessonPage);
-        return "lesson/list";
-    }
-
-    @GetMapping("/filter/difficulty")
-    public String filterLessonByDifficulty(@RequestParam String difficulty, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Lesson> lessonPage = lessonService.filterLessonsByDifficulty(difficulty, pageable);
-        model.addAttribute("lessonPage", lessonPage);
-        model.addAttribute("filterType", "difficulty");
-        model.addAttribute("filterValue", difficulty);
-        return "lesson/list";
-    }
-
-    @GetMapping("/filter/duration")
-    public String filterLessonByDuration(@RequestParam Integer min, @RequestParam Integer max, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Lesson> lessonPage = lessonService.filterLessonsByDuration(min, max, pageable);
-        model.addAttribute("lessonPage", lessonPage);
-        model.addAttribute("filterType", "duration");
-        model.addAttribute("min", min);
-        model.addAttribute("max", max);
         return "lesson/list";
     }
 
@@ -69,5 +50,19 @@ public class LessonController {
     public String deleteLesson(@PathVariable Long id) {
         lessonService.deleteLesson(id);
         return "redirect:/lessons";
+    }
+
+    @GetMapping("/filter")
+    public String filterLessons(@RequestParam(required = false) String difficulty,
+                                @RequestParam(required = false) Integer min,
+                                @RequestParam(required = false) Integer max,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Lesson> lessonPage = lessonService.filterLessons(difficulty, min, max, pageable);
+        model.addAttribute("lessonPage", lessonPage);
+        model.addAttribute("activeFilters", Map.of("difficulty", difficulty, "min", min, "max", max));
+        return "lesson/list";
     }
 }

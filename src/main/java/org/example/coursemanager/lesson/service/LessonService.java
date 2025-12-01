@@ -35,13 +35,7 @@ public class LessonService {
         return false;
     }
 
-    public Page<Lesson> filterLessonsByDifficulty(String difficulty, Pageable pageable) {
-        return lessonRepository.findByDifficultyLevelIgnoreCase(difficulty, pageable);
-    }
-
-    public Page<Lesson> filterLessonsByDuration(Integer minDuration, Integer maxDuration, Pageable pageable) {
-        if (minDuration == null) minDuration = 0;
-        if (maxDuration == null) maxDuration = Integer.MAX_VALUE;
-        return lessonRepository.findByDurationBetween(minDuration, maxDuration, pageable);
+    public Page<Lesson> filterLessons(String difficulty, Integer min, Integer max, Pageable pageable) {
+        return lessonRepository.filterLessons(difficulty, min, max, pageable);
     }
 }
