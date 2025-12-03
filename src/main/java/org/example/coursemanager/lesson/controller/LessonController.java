@@ -24,6 +24,7 @@ public class LessonController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Lesson> lessonPage = lessonService.getAllLessons(pageable);
         model.addAttribute("lessonPage", lessonPage);
+        model.addAttribute("activeFilters", Map.of("difficulty", "", "min", "", "max", ""));
         return "lesson/list";
     }
 

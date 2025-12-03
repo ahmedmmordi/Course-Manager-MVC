@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,10 @@ public class LessonService {
 
     public Page<Lesson> getAllLessons(Pageable pageable) {
         return lessonRepository.findAll(pageable);
+    }
+
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAll();
     }
 
     public Optional<Lesson> getLessonById(Long id) {

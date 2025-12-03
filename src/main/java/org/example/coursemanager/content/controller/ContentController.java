@@ -3,6 +3,7 @@ package org.example.coursemanager.content.controller;
 import org.example.coursemanager.content.model.Content;
 import org.example.coursemanager.content.model.DateRange;
 import org.example.coursemanager.content.service.ContentService;
+import org.example.coursemanager.lesson.service.LessonService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/contents")
 public class ContentController {
     private final ContentService contentService;
-    public ContentController(ContentService contentService) {
+    private final LessonService lessonService;
+    public ContentController(ContentService contentService, LessonService lessonService) {
         this.contentService = contentService;
+        this.lessonService = lessonService;
     }
 
     @GetMapping
@@ -29,6 +32,7 @@ public class ContentController {
     @GetMapping("/create")
     public String createContent(Model model) {
         model.addAttribute("content", new Content());
+        model.addAttribute("lessons", lessonService.getAllLessons());
         return "content/form";
     }
 
