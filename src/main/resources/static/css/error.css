@@ -1,0 +1,31 @@
+.page {
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.error-card {
+    background: white;
+    padding: 40px;
+    width: 380px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #4b5563;
+    margin-bottom: 25px;
+}

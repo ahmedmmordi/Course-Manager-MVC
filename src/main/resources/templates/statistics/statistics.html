@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Statistics Dashboard</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" th:href="@{/css/statistics.css}">
+    </head>
+
+    <body class="bg-gray-100 min-h-screen flex flex-col">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">Statistics Dashboard</h1>
+        </header>
+
+        <main class="flex-1 p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card bg-white rounded-xl shadow p-6 border-t-4 border-blue-500">
+                    <h2 class="text-gray-700 font-semibold text-xl">Courses</h2>
+                    <p class="text-4xl font-bold text-blue-600 mt-3" th:text="${statistics.course_count}">0</p>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl shadow p-6 border-t-4 border-blue-500">
+                    <h2 class="text-gray-700 font-semibold text-xl">Categories</h2>
+                    <p class="text-4xl font-bold text-blue-600 mt-3" th:text="${statistics.category_count}">0</p>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl shadow p-6 border-t-4 border-blue-500">
+                    <h2 class="text-gray-700 font-semibold text-xl">Lessons</h2>
+                    <p class="text-4xl font-bold text-blue-600 mt-3" th:text="${statistics.lesson_count}">0</p>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl shadow p-6 border-t-4 border-blue-500">
+                    <h2 class="text-gray-700 font-semibold text-xl">Lesson Contents</h2>
+                    <p class="text-4xl font-bold text-blue-600 mt-3" th:text="${statistics.content_count}">0</p>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

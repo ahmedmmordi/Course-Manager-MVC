@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Course Form</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-gray-100 min-h-screen">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">
+                <span th:text="${course.id == null ? 'Create Course' : 'Edit Course'}"></span>
+            </h1>
+        </header>
+
+        <main class="p-6 flex justify-center">
+            <form th:action="@{/courses/save}" th:object="${course}" method="post" class="bg-white p-8 rounded-xl shadow w-full max-w-lg">
+                <input type="hidden" name="id" th:if="${course.id != null}" th:value="${course.id}" />
+                <label class="block mb-2 text-gray-700 font-medium text-lg">Course Title</label>
+                <label>
+                    <input th:field="*{title}" type="text" placeholder="Enter title..." required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none mb-6"/>
+                </label>
+                <div class="flex justify-between mt-4">
+                    <a href="/courses" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</a>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Save</button>
+                </div>
+            </form>
+        </main>
+    </body>
+</html>
