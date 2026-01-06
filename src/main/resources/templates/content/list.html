@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lesson Contents</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-gray-100 min-h-screen">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">Lesson Contents</h1>
+        </header>
+
+        <main class="p-6">
+            <form th:action="@{/contents/filter/date}" method="get" class="mb-4 flex gap-2 justify-center">
+                <label>
+                    <select name="range" required class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option th:each="r : ${T(org.example.coursemanager.content.model.DateRange).values()}"
+                                th:value="${r.name()}"
+                                th:text="${r.name().replace('_',' ')}"
+                                th:selected="${range != null} ? ${r.name()} == ${range.name()} : ${r.name()} == 'ALL_TIME'">
+                        </option>
+                    </select>
+                </label>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Filter</button>
+            </form>
+
+            <div class="bg-white rounded-xl shadow p-6 overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="border-b bg-gray-200">
+                            <th class="text-left p-3 text-gray-600 font-semibold">ID</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Lesson</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Video URL</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Document URL</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Created At</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Updated At</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="content : ${contentPage.content}" class="border-b hover:bg-gray-50 transition">
+                            <td class="p-3" th:text="${content.id}">1</td>
+                            <td class="p-3" th:text="${content.lesson.title}">Lesson Title</td>
+                            <td class="p-3" th:text="${content.videoUrl}">video.mp4</td>
+                            <td class="p-3" th:text="${content.documentUrl}">doc.pdf</td>
+                            <td class="p-3" th:text="${#temporals.format(content.createdAt, 'yyyy-MM-dd HH:mm')}">2025-12-03</td>
+                            <td class="p-3" th:text="${#temporals.format(content.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-12-03</td>
+                            <td class="p-3 flex gap-2">
+                                <a th:href="@{|/contents/edit/${content.id}|}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Edit</a>
+                                <a th:href="@{|/contents/delete/${content.id}|}" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure?');">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="flex justify-start mt-4">
+                    <a href="/contents/create" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Create Content</a>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-6">
+                <div class="flex gap-2">
+                    <a th:href="@{|/contents?page=${contentPage.number - 1}|}" th:classappend="${contentPage.first} ? 'opacity-50 pointer-events-none' : ''" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Prev</a>
+                    <span class="px-4 py-2 bg-white rounded shadow">Page <span th:text="${contentPage.number + 1}">1</span>of <span th:text="${contentPage.totalPages}">1</span></span>
+                    <a th:href="@{|/contents?page=${contentPage.number + 1}|}" th:classappend="${contentPage.last} ? 'opacity-50 pointer-events-none' : ''" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Next</a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

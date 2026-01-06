@@ -44,8 +44,10 @@ public class ContentController {
 
     @GetMapping("/edit/{id}")
     public String editContent(@PathVariable Long id, Model model) {
-        Content content = contentService.getContentById(id).orElse(null);
+        Content content = contentService.getContentById(id)
+                .orElseThrow(() -> new RuntimeException("Content Not Found."));
         model.addAttribute("content", content);
+        model.addAttribute("lessons", lessonService.getAllLessons());
         return "content/form";
     }
 
@@ -56,7 +58,7 @@ public class ContentController {
     }
 
     @GetMapping("/filter/date")
-    public String filterContentByDate(@RequestParam DateRange range, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
+    public String filterContentByDate(@RequestParam(required = false) DateRange range, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Content> contentPage = contentService.filterContentsByCreatedAt(range, pageable);
         model.addAttribute("contentPage", contentPage);

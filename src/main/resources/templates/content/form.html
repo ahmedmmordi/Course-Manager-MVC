@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${content.id == null ? 'Create Content' : 'Edit Content'}">Content Form</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-gray-100 min-h-screen">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center" th:text="${content.id == null ? 'Create Content' : 'Edit Content'}">Content Form</h1>
+        </header>
+
+        <main class="p-6 flex justify-center">
+            <form th:action="@{/contents/save}" th:object="${content}" method="post" class="bg-white p-8 rounded-xl shadow w-full max-w-lg flex flex-col gap-4">
+                <input type="hidden" th:field="*{id}"/>
+                <label class="block text-gray-700 font-semibold">Lesson</label>
+                <label>
+                    <select th:field="*{lesson.id}" required
+                            class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" disabled th:selected="${content.lesson == null}">-- Select Lesson --</option>
+                        <option th:each="lesson : ${lessons}"
+                                th:value="${lesson.id}"
+                                th:text="${lesson.title}"
+                                th:selected="${content.lesson != null} ? ${lesson.id} == ${content.lesson.id} : false">
+                        </option>
+                    </select>
+                </label>
+
+                <label class="block text-gray-700 font-semibold">Video URL</label>
+                <label>
+                    <input type="text" th:field="*{videoUrl}" placeholder="Video URL" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                </label>
+                <label class="block text-gray-700 font-semibold">Document URL</label>
+                <label>
+                    <input type="text" th:field="*{documentUrl}" placeholder="Document URL" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                </label>
+
+                <div class="flex justify-between mt-6">
+                    <a href="/contents" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</a>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Save</button>
+                </div>
+            </form>
+        </main>
+    </body>
+</html>
