@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${lesson.id == null ? 'Create Lesson' : 'Edit Lesson'}">Lesson Form</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-gray-100 min-h-screen">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center" th:text="${lesson.id == null ? 'Create Lesson' : 'Edit Lesson'}">Lesson Form</h1>
+        </header>
+
+        <main class="p-6 flex justify-center">
+            <form th:action="@{/lessons/save}" th:object="${lesson}" method="post" class="bg-white p-8 rounded-xl shadow w-full max-w-lg flex flex-col gap-4">
+                <input type="hidden" th:field="*{id}"/>
+                <label class="block text-gray-700 font-semibold">Title</label>
+                <label>
+                    <input type="text" th:field="*{title}" placeholder="Lesson Title" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"/>
+                </label>
+                <label class="block text-gray-700 font-semibold">Duration (minutes)</label>
+                <label>
+                    <input type="number" th:field="*{duration}" placeholder="Duration" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"/>
+                </label>
+                <label class="block text-gray-700 font-semibold">Difficulty</label>
+                <label>
+                    <select th:field="*{difficultyLevel}" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+                        <option value="" disabled th:selected="${lesson.difficultyLevel == null}">-- Select Difficulty --</option>
+                        <option value="Beginner" th:selected="${lesson.difficultyLevel == 'Beginner'}">Beginner</option>
+                        <option value="Intermediate" th:selected="${lesson.difficultyLevel == 'Intermediate'}">Intermediate</option>
+                        <option value="Advanced" th:selected="${lesson.difficultyLevel == 'Advanced'}">Advanced</option>
+                    </select>
+                </label>
+                <label class="block text-gray-700 font-semibold">Category</label>
+                <label>
+                    <select th:field="*{category.id}" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+                        <option value="" disabled th:selected="${lesson.category == null}">-- Select Category --</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${lesson.category != null} ? ${cat.id} == ${lesson.category.id} : false"></option>
+                    </select>
+                </label>
+                <label class="block text-gray-700 font-semibold">Course</label>
+                <label>
+                    <select th:field="*{course.id}" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
+                        <option value="" disabled th:selected="${lesson.course == null}">-- Select Course --</option>
+                        <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.title}" th:selected="${lesson.course != null} ? ${c.id} == ${lesson.course.id} : false"></option>
+                    </select>
+                </label>
+                <div class="flex items-center gap-2">
+                    <label>
+                        <input type="checkbox" th:field="*{isPublished}" class="w-5 h-5"/>
+                    </label>
+                    <label class="text-gray-700 font-semibold">Published</label>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <a href="/lessons" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">Cancel</a>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Save</button>
+                </div>
+            </form>
+        </main>
+    </body>
+</html>

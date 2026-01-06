@@ -10,15 +10,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
-    @Query(value = """
-        SELECT * FROM lessons
-        WHERE (:difficulty IS NULL OR lesson_difficulty_level = :difficulty)
-        AND ((:min IS NULL OR :max IS NULL) OR lesson_duration BETWEEN :min AND :max)""",
-            countQuery = """
-        SELECT COUNT(*) FROM lessons
-        WHERE (:difficulty IS NULL OR lesson_difficulty_level = :difficulty)
-        AND ((:min IS NULL OR :max IS NULL) OR lesson_duration BETWEEN :min AND :max)""",
-            nativeQuery = true
-    )
-    Page<Lesson> filterLessons(@Param("difficulty") String difficulty, @Param("min") Integer min, @Param("max") Integer max, Pageable pageable);
+    @Query("""
+        SELECT l FROM Lesson l
+            WHERE (:difficulty IS NULL OR l.difficultyLevel = :difficulty)
+            AND l.duration >= 0
+            AND l.duration <= COALESCE(:max, 2147483647)
+            AND (:published IS NULL OR l.isPublished = :published)
+    """)
+    Page<Lesson> filterLessons(@Param("difficulty") String difficulty, @Param("max") Integer max, @Param("published") Boolean published, Pageable pageable);
 }

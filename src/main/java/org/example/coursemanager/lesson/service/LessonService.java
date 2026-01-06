@@ -28,19 +28,20 @@ public class LessonService {
         return lessonRepository.findById(id);
     }
 
-    public Lesson saveLesson(Lesson lesson) {
-        return lessonRepository.save(lesson);
+    public void saveLesson(Lesson lesson) {
+        lessonRepository.save(lesson);
     }
 
     public boolean deleteLesson(Long id) {
-        if (lessonRepository.existsById(id)) {
+        boolean exists = lessonRepository.existsById(id);
+        if (exists) {
             lessonRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public Page<Lesson> filterLessons(String difficulty, Integer min, Integer max, Pageable pageable) {
-        return lessonRepository.filterLessons(difficulty, min, max, pageable);
+    public Page<Lesson> filterLessons(String difficulty, Integer max, Boolean published, Pageable pageable) {
+        return lessonRepository.filterLessons(difficulty, max, published, pageable);
     }
 }

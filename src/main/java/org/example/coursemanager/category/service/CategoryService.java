@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,10 @@ public class CategoryService {
 
     public Page<Category> getAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable);
+    }
+
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
     public Optional<Category> getCategoryById(Long id) {

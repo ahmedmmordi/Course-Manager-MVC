@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lessons</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-gray-100 min-h-screen">
+        <header class="bg-white shadow p-4 flex justify-center">
+            <h1 class="text-3xl font-semibold text-gray-800 text-center">Lessons</h1>
+        </header>
+
+        <main class="p-6">
+            <form th:action="@{/lessons/filter}" method="get" class="mb-4 flex gap-2 justify-center flex-wrap">
+                <label>
+                    <select name="published" class="px-3 py-2 border rounded-lg">
+                        <option value="">All</option>
+                        <option value="true" th:selected="${activeFilters['published'] != null and activeFilters['published']}">Published</option>
+                        <option value="false" th:selected="${activeFilters['published'] != null and !activeFilters['published']}">Unpublished</option>
+                    </select>
+                </label>
+                <label>
+                    <select name="difficulty" class="px-3 py-2 border rounded-lg">
+                        <option value="">All</option>
+                        <option value="Beginner" th:selected="${activeFilters['difficulty'] == 'Beginner'}">Beginner</option>
+                        <option value="Intermediate" th:selected="${activeFilters['difficulty'] == 'Intermediate'}">Intermediate</option>
+                        <option value="Advanced" th:selected="${activeFilters['difficulty'] == 'Advanced'}">Advanced</option>
+                    </select>
+                </label>
+                <label>
+                    <select name="max" class="px-3 py-2 border rounded-lg">
+                        <option value="">All Durations</option>
+                        <option value="30" th:selected="${activeFilters['max'] == 30}">Up to 30 min</option>
+                        <option value="60" th:selected="${activeFilters['max'] == 60}">Up to 60 min</option>
+                        <option value="120" th:selected="${activeFilters['max'] == 120}">Up to 120 min</option>
+                    </select>
+                </label>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Filter</button>
+            </form>
+
+            <div class="bg-white rounded-xl shadow p-6 overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="border-b bg-gray-200">
+                            <th class="text-left p-3 text-gray-600 font-semibold">ID</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Title</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Duration</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Difficulty</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Published</th>
+                            <th class="text-left p-3 text-gray-600 font-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="lesson : ${lessonPage.content}" class="border-b hover:bg-gray-50 transition">
+                            <td class="p-3" th:text="${lesson.id}">1</td>
+                            <td class="p-3" th:text="${lesson.title}">Lesson Title</td>
+                            <td class="p-3" th:text="${lesson.duration}">60</td>
+                            <td class="p-3" th:text="${lesson.difficultyLevel}">Beginner</td>
+                            <td class="p-3" th:text="${lesson.isPublished} ? 'Yes' : 'No'">Yes</td>
+                            <td class="p-3 flex gap-2">
+                                <a th:href="@{|/lessons/edit/${lesson.id}|}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Edit</a>
+                                <a th:href="@{|/lessons/delete/${lesson.id}|}" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition" onclick="return confirm('Are you sure?');">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="flex justify-start mt-4">
+                    <a href="/lessons/create" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Create Lesson</a>
+                </div>
+
+                <div class="flex justify-center mt-6">
+                    <div class="flex gap-2">
+                        <a th:href="@{/lessons/filter(page=${lessonPage.number > 0 ? lessonPage.number - 1 : 0}, size=${lessonPage.size},
+                            difficulty=${activeFilters['difficulty']}, max=${activeFilters['max']},
+                            published=${activeFilters['published']})}" th:classappend="${lessonPage.first} ?
+                            'opacity-50 pointer-events-none' : ''" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Prev
+                        </a>
+                        <span class="px-4 py-2 bg-white rounded shadow">Page <span th:text="${lessonPage.number + 1}">1</span>of <span th:text="${lessonPage.totalPages}">1</span></span>
+                        <a th:href="@{/lessons/filter(page=${lessonPage.number < lessonPage.totalPages - 1 ? lessonPage.number + 1 : lessonPage.number}, size=${lessonPage.size},
+                            difficulty=${activeFilters['difficulty']}, max=${activeFilters['max']}, published=${activeFilters['published']})}" th:classappend="${lessonPage.last} ?
+                            'opacity-50 pointer-events-none' : ''" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Next
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
