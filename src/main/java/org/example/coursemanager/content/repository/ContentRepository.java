@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
+    @EntityGraph(attributePaths = "lesson")
     Page<Content> findByCreatedAtAfter(LocalDateTime createdAt, Pageable pageable);
 
     @Override
